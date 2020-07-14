@@ -1,0 +1,306 @@
+.landing {
+  width: 100%;
+  height: 100%;
+}
+
+.intro {
+  position: relative;
+  /* width: 675px;
+  height: 340px; */
+  text-align: center;
+}
+
+#img-head {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: xx-large;
+}
+
+#img-foot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: small;
+}
+
+#sign-up {
+  position: absolute;
+  width: 190px;
+  height: 40px;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: orange;
+  cursor: pointer;
+}
+
+#sign-up-1{
+  position: absolute;
+  color: white;
+  font-size: 10px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  display: flex;
+  align-items: flex-end;
+}
+
+.topnav a {
+float: right;
+color: #f2f2f2;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+font-size: 10px;
+flex: 1;
+}
+
+#div-1{
+  width:120px;
+}
+
+#div-2{
+  width: 70px;
+}
+
+.topnav a:hover {
+background-color: #ddd;
+color: black;
+}
+
+.topnav a.active {
+color: white;
+}
+
+.topnav img{
+  height: 50px;
+  width: 40px;
+}
+
+.topnav span{
+  width:50%;
+}
+
+.bills {
+  position: relative;
+  width: 220px;
+  height: 25px;
+  border: solid#5cd8f7;
+  border-radius: 5px;
+  border-width: 2px;
+  margin-left: 3%;
+}
+
+#bill-1{
+  position: absolute;
+  background-color: #5cd8f7;
+  text-align: center;
+  height: 25px;
+  width: 110px;
+  cursor: pointer;
+}
+
+.bills span {
+  position: absolute;
+  color: white;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#bill-2{
+  position: absolute;
+  color: #03d3fc;
+  top: 50%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#overview {
+  border-collapse: collapse;
+  margin-left: 2%;
+}
+
+.ov {
+  border-left: solid grey;
+  border-width: 1px;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+#tr-1 {
+  color: grey;
+  font-size: 10px;
+}
+
+#tr-2 {
+  font-size: 30px;
+}
+
+.spacer {
+  width: 50px;
+  border-left: white;
+}
+
+.bills-list {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  text-align: center;
+  margin-left: 2%;
+}
+
+#due-title {
+  position: absolute;
+  top: 30px;
+  height: 10px;
+  margin-left: 3%;
+}
+
+#side {
+  width: 5px;
+  height: 30px;
+  top: 0px;
+  left: 0px;
+  background-color: orange;
+}
+
+#bills-list-title {
+  margin-left: -20%;
+  font-weight: 1000;
+  font-size: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#bills-list-subtitle {
+  position: absolute;
+  top: 150%;
+  left: 30px;
+  transform: translate(0, -50%);
+  color: orange;
+  font-weight: bold;
+}
+
+.bills-list table {
+  position: absolute;
+  top: 80px;
+  left: 36%;
+  transform: translate(-50%, 0);
+}
+
+.bottom-border td {
+  border-bottom: solid grey;
+  border-width: 1px;
+}
+
+.spacer-1 {
+  width: 5px;
+}
+
+.spacer-2 {
+  width: 60px;
+}
+
+.second-cell {
+  width: 200px;
+}
+
+.table-2 td {
+  color: #A9A9A9;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 9%;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.footer img {
+   width: 25px;
+   height: 25px;
+   /* transform: translate(-100%, 0); */
+}
+
+/* .footer i {
+   transform: translate(-25px, 0);
+} */
+
+h1 {
+  color: grey;
+}
+
+.create-bill {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+}
+
+input::placeholder {
+  font-weight: bold;
+}
+
+input {
+  width: 200px;
+  height: 25px;
+  border: 0;
+  background-color: #e9f0ec;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  margin-left: -160px;
+}
+
+input[type="checkbox"]+label {
+  font-weight: bold;
+  font-size: small;
+}
+
+input[type="button"] {
+  color: white;
+  background-color: #f294a2;
+  height: 35px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.border-div {
+  background-color: #ffe0e5;
+  position: absolute;
+  width: 10px;
+  height: 250px;
+}
+
+#div-border-2 {
+  right: 0;
+}
+
+#div-border-1 {
+  float: left;
+}
