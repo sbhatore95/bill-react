@@ -1,9 +1,10 @@
 import React from 'react';
 import Welcome from './welcome.jsx';
 import Page2 from './create_bill.jsx';
+
 function App() {
   return (
-    <Welcome />
+      <Welcome />
   );
 }
 
