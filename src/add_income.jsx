@@ -15,11 +15,12 @@ class AddIncome extends React.Component{
     }
     render(){
         return(
-            <form onSubmit={this.handleSubmit}>
-                <label>Amount</label>
-                <input type="number" name="amount" id="" placeholder="Bill Amount" value={this.state.amount} onChange={this.handleChange}/>
-                <input type="submit" value="Submit" />
-            </form>
+            <div className="addInc">
+                <form onSubmit={this.handleSubmit}>
+                    <input type="number" name="amount" id="" placeholder="Income Amount" value={this.state.amount} onChange={this.handleChange}/>
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
         );
     }
 }

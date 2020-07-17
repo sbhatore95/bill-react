@@ -34,10 +34,9 @@ class EditBill extends BillForm{
             
             <br /><br />
                     <input placeholder="Bill Date" type="text" onfocus="(this.type='date')" value={this.state.data.date} onChange={this.handleChange3}/>
-            {/*
-            <br /> <br />
-                    <input type="checkbox" name="advance" id="" /><label for="advance" onChange={this.handleChange(this, 'paid')}>Paid</label>
-            */}
+           <br /> <br />
+                    <input type="checkbox" name="advance" id="" onChange={this.handleChange4} checked={this.state.data.checked}/><label>Paid</label>
+           
             <br /><br /> 
                     <input type="submit" value="Submit" />
                 </form>

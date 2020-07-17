@@ -11,63 +11,101 @@ class Welcome extends React.Component{
     constructor(props){
         super(props);
         this.state = {show: 'page1', column: 'pending', data: {pending: {titles: [], amounts: [], dates: []}, 
-        paid: {titles: [], amounts: [], dates: []}}, cash: 0}
+        paid: {titles: [], amounts: [], dates: []}}, over: {due: 0, paid: 0, cash: 0}}
         this.onStateChange = this.onStateChange.bind(this);
         this.handleClickSubmit = this.handleClickSubmit.bind(this);
         this.onToggle = this.onToggle.bind(this);
         this.onEdit = this.onEdit.bind(this);
     }
     onStateChange(show){
-        this.setState({show: show, data: this.state.data, cash: this.state.cash});
+        this.setState({show: show, data: this.state.data, over: this.state.over});
     }
     handleClickSubmit(data){
-        let dataClone;
-        dataClone = {...this.state.data};
-        if(data.checked === undefined){
+        let dataClone = {...this.state.data};
+        let overClone = {...this.state.over};
+        let amt = parseInt(data.amount);
+        if(data.checked === undefined || data.checked === false){
             dataClone.pending.titles.push(data.title);
             dataClone.pending.amounts.push(data.amount);
             dataClone.pending.dates.push(data.date);
+            overClone.due += amt;
         }
         else{
             dataClone.paid.titles.push(data.title);
             dataClone.paid.amounts.push(data.amount);
             dataClone.paid.dates.push(data.date);
+            overClone.paid += amt;
+            overClone.cash -= amt;
         }
-        this.setState({show: 'page1', data: dataClone, cash: this.state.cash});
+        this.setState({show: 'page1', column: 'pending', data: dataClone, over: overClone});
     }
     onToggle(column){
-        alert('hey');
-        // if(column === 'pending' && this.state.column !== 'pending')
-        //     this.setState({show: this.state.show, column: 'pending', data: this.state.data, cash: this.state.cash})
-        // else if(column === 'paid' && this.state.column !== 'paid')
-        //     this.setState({show: this.state.show, column: 'paid', data: this.state.data, cash: this.state.cash})
+        if(column === 'pending' && this.state.column !== 'pending')
+            this.setState({show: this.state.show, column: 'pending', data: this.state.data, over: this.state.over})
+        else if(column === 'paid' && this.state.column !== 'paid')
+            this.setState({show: this.state.show, column: 'paid', data: this.state.data, over: this.state.over})
     }
     onEdit(id){
-        this.setState({show: 'edit-'+id, column: 'pending', data: this.state.data, cash: this.state.cash});
+        this.setState({show: 'edit-'+id, column: this.state.column, data: this.state.data, over: this.state.over});
     }
     afterEdit = (data, id, column) => {
         let dataClone = {...this.state.data};
-        dataClone[column].titles[id] = data.title;
-        dataClone[column].amounts[id] = data.amount;
-        dataClone[column].dates[id] = data.date;
-        this.setState({show: 'page1', column: 'pending', data: dataClone, cash: this.state.cash});
+        let dCD = dataClone['paid'];
+        let dCP = dataClone['pending'];
+        if(data.checked === undefined || data.checked === false){
+            if(column === 'paid'){
+                this.state.over.due += parseInt(data.amount);
+                this.state.over.paid -= parseInt(data.amount);
+                dCD.titles.splice(id, 1);
+                dCD.amounts.splice(id, 1);
+                dCD.dates.splice(id, 1);
+                dCP.titles.push(data.title);
+                dCP.amounts.push(data.amount);
+                dCP.dates.push(data.date);
+            }
+            else{
+                dCP.titles[id] = data.title;
+                dCP.amounts[id] = data.amount;
+                dCP.dates[id] = data.date;
+            }
+        }
+        else{
+            if(column === 'pending'){
+                this.state.over.due -= parseInt(data.amount);
+                this.state.over.paid += parseInt(data.amount);
+                this.state.over.cash -= parseInt(data.amount);
+                dCP.titles.splice(id, 1);
+                dCP.amounts.splice(id, 1);
+                dCP.dates.splice(id, 1);
+                dCD.titles.push(data.title);
+                dCD.amounts.push(data.amount);
+                dCD.dates.push(data.date);
+            }
+            else{
+                dCD.titles[id] = data.title;
+                dCD.amounts[id] = data.amount;
+                dCD.dates[id] = data.date;
+            }
+        }
+        this.setState({show: 'page1', column: 'pending', data: {paid: dCD, pending: dCP}, over: this.state.over});
     }
     onAddInc = (amount) => {
-        let new_cash = this.state.cash + parseInt(amount);
-        this.setState({show: 'page1', column: 'pending', data: this.state.data, cash: new_cash});
+        let new_over = {...this.state.over};
+        new_over.cash = this.state.over.cash + parseInt(amount);
+        this.setState({show: 'page1', column: 'pending', data: this.state.data, over: new_over});
     }
     render(){
         const show = this.state.show;
         const data = this.state.data;
         const column = this.state.column;
-        const cash = this.state.cash;
+        const over = this.state.over;
         console.log(this.state.cash);
         return(
             <div className="container">
                 <Navbar onStateChange={this.onStateChange}/>
                 <Body show={show} onToggle={this.onToggle} column={column} data={data} 
                 onSub={this.handleClickSubmit} onEdit={this.onEdit} afterEdit={this.afterEdit} 
-                onAddInc={this.onAddInc} cash={cash}/>: 
+                onAddInc={this.onAddInc} over={over}/>: 
                 <Footer />
             </div> 
         );
@@ -84,7 +122,7 @@ class Body extends React.Component{
                 <div className="body">
                     <Landing />
                     <div className="spacer-div">
-                        <Overview cash={this.props.cash}/>
+                        <Overview over={this.props.over}/>
                         <Toggle onToggle={this.props.onToggle} />
                         <List column={this.props.column} data={this.props.data} onEdit={this.props.onEdit}/>  
                     </div>
@@ -96,15 +134,16 @@ class Body extends React.Component{
             );
         }
         else if(this.props.show[0] == 'e'){
-            const id = this.props.show.split('-')[1];
+            const id = parseInt(this.props.show.split('-')[1]);
             const exp = this.props.column==='pending';
             const pen = this.props.data.pending;
             const paid = this.props.data.paid;
+            console.log(exp);
             let state = {data: 
                 {title: exp ? pen.titles[id]:paid.titles[id],
                     amount: exp ? pen.amounts[id]:paid.amounts[id],
                     date: exp ? pen.dates[id]:paid.dates[id],
-                    checked: exp ? pen.checks[id]:paid.checks[id]
+                    checked: !exp
                 }
             }
             console.log(state);
@@ -135,10 +174,9 @@ class Navbar extends React.Component{
             <div class="topnav">
                 <img src={logo} alt="logo" onClick={this.handleClick1} />
                 <span></span>
-                <div id="div-1"><a href="#">+ Add Accounts</a></div>
+                <a href="#" onClick={this.handleClick1}>Home</a>
                 <a href="#" onClick={this.handleClick2}>Create Bill</a>
                 <a href="#" onClick={this.handleClick3}>Add Income</a>
-                <div id="div-2"><a href="#">Log Out</a></div>
                 <div class="empty"></div>
             </div>
         );
@@ -152,9 +190,6 @@ class Landing extends React.Component{
                 <img src={main} alt="Landing image" class="landing" />
                 <h1 id="img-head">Effortlessly stay on top of bills</h1>
                 <p id="img-foot">Now you can manage bills and money together with Mint.</p>
-                <div onclick="location.href='#';" id="sign-up">
-                    <span id="sign-up-1"><b>SIGN UP FOR FREE</b></span>
-                </div>
             </div>
         );
     }
@@ -194,11 +229,11 @@ class Overview extends React.Component{
                     <td class="ov">CASH AVAILABLE</td>
                 </tr>
                 <tr id="tr-2">
-                    <td class="ov">$2, 254</td>
+                    <td class="ov">${this.props.over.due}</td>
                     <td class="spacer"></td>
-                    <td class="ov">$12, 818</td>
+                    <td class="ov">${this.props.over.paid}</td>
                     <td class="spacer"></td>
-                    <td class="ov">${this.props.cash}</td>
+                    <td class="ov">${this.props.over.cash}</td>
                 </tr>
             </table>
         );
@@ -233,16 +268,28 @@ class List extends React.Component{
             dates = data.paid.dates;
         }
         for( let i=0;i<titles.length;i++){
-            table_elements.push(<tr><td>{dates[i]}</td><td>{titles[i]}</td><td>{amounts[i]}</td><td>{edit_btn(i)}</td></tr>);
+            table_elements.push(
+                <tr>
+                    <td>{dates[i]}</td>
+                    <td>{titles[i]}</td>
+                    <td>{amounts[i]}</td>
+                    <td>{edit_btn(i)}</td>
+                </tr>);
         }
+        let ret = titles.length !== 0 ?
+            <table className="list">
+                <thead>
+                    <th>Bill Date</th>
+                    <th>Bill Title</th>
+                    <th>Bill Amount (in $)</th>
+                </thead>
+                {table_elements}
+            </table>
+            :
+            <span></span>
         return(
             <div class="bills-list">
-                <span id="bills-list-title">Upcoming Bills</span>
-                <div id="due-title">
-                    <div id="side"></div>
-                    <span id="bills-list-subtitle">Due</span>
-                </div>
-                <table>{table_elements}</table>
+                {ret}
             </div>
         );
     }
