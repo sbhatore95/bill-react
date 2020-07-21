@@ -138,7 +138,6 @@ class Body extends React.Component{
             const exp = this.props.column==='pending';
             const pen = this.props.data.pending;
             const paid = this.props.data.paid;
-            console.log(exp);
             let state = {data: 
                 {title: exp ? pen.titles[id]:paid.titles[id],
                     amount: exp ? pen.amounts[id]:paid.amounts[id],
